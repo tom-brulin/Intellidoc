@@ -7,6 +7,7 @@ specifiers:
   eslint: 8.27.0
   eslint-config-next: 13.0.2
   next: 13.0.2
+  parse-md: ^3.0.3
   react: 18.2.0
   react-dom: 18.2.0
   sass: ^1.56.1
@@ -19,6 +20,7 @@ dependencies:
   eslint: 8.27.0
   eslint-config-next: 13.0.2_rmayb2veg2btbq6mbmnyivgasy
   next: 13.0.2_biqbaboplfbrettd7655fr4n2y
+  parse-md: 3.0.3
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   sass: 1.56.1
@@ -1558,6 +1560,12 @@ packages:
     engines: {node: '>=6'}
     dependencies:
       callsites: 3.1.0
+    dev: false
+
+  /parse-md/3.0.3:
+    resolution: {integrity: sha512-2kpNrrW1GBgli5VT9X9/Y6n4PVsIFVdG49tguq1PHwzsRSK0Cu0yJPTUFOwWouFT85atYNWQ1T/rmqfj7kLd8g==}
+    dependencies:
+      js-yaml: 4.1.0
     dev: false
 
   /path-exists/4.0.0:

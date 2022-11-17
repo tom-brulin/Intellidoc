@@ -29,7 +29,7 @@ export class DocumentationService {
                 category.index = metadata.index || category.index;
             }
 
-            category.subCategories = await this.getSubCategories(category.name);
+            category.subCategories = await this.getSubCategories(category);
 
             categories.push(category);
         }
@@ -38,25 +38,25 @@ export class DocumentationService {
         return categories;
     }    
 
-    public async getSubCategories(category: string): Promise<SubCategory[]> {
+    public async getSubCategories(category: Category): Promise<SubCategory[]> {
         const subCategories: SubCategory[] = [];
-        const subCategoryDirectories = await fs.promises.readdir(join(DocumentationService.DOCS_PATH, category), { withFileTypes: true });
+        const subCategoryDirectories = await fs.promises.readdir(join(DocumentationService.DOCS_PATH, category.key), { withFileTypes: true });
 
         for (const subCategoryDirectory of subCategoryDirectories) {
             if (!subCategoryDirectory.isDirectory()) {
                 continue;
             }
 
-            const subCategory = new SubCategory(subCategoryDirectory.name);
+            const subCategory = new SubCategory(subCategoryDirectory.name, category);
 
-            if (await FileUtils.exists(join(DocumentationService.DOCS_PATH, category, subCategoryDirectory.name, 'index.md'))) {
-                const fileContent = await fs.promises.readFile(join(DocumentationService.DOCS_PATH, category, subCategoryDirectory.name, 'index.md'), 'utf8');
+            if (await FileUtils.exists(join(DocumentationService.DOCS_PATH, category.key, subCategoryDirectory.name, 'index.md'))) {
+                const fileContent = await fs.promises.readFile(join(DocumentationService.DOCS_PATH, category.key, subCategoryDirectory.name, 'index.md'), 'utf8');
                 const { metadata }: any = parseMD(fileContent);
                 subCategory.name = metadata.name || subCategory.name;
                 subCategory.index = metadata.index || subCategory.index;
             }
 
-            subCategory.pages = await this.getPages(category, subCategoryDirectory.name);
+            subCategory.pages = await this.getPages(category, subCategory);
 
             subCategories.push(subCategory);
         }
@@ -65,19 +65,19 @@ export class DocumentationService {
         return subCategories;
     }
 
-    public async getPages(category: string, subCategory: string): Promise<Page[]> {
+    public async getPages(category: Category, subCategory: SubCategory): Promise<Page[]> {
         const pages: Page[] = [];
-        const pageFiles = await fs.promises.readdir(join(DocumentationService.DOCS_PATH, category, subCategory), { withFileTypes: true });
+        const pageFiles = await fs.promises.readdir(join(DocumentationService.DOCS_PATH, category.key, subCategory.key), { withFileTypes: true });
 
         for (const pageFile of pageFiles) {
             if (!pageFile.isFile() || pageFile.name === 'index.md') {
                 continue;
             }
 
-            const page = new Page(pageFile.name.replace('.md', ''));
+            const page = new Page(pageFile.name.replace('.md', ''), subCategory);
 
-            if (await FileUtils.exists(join(DocumentationService.DOCS_PATH, category, subCategory, pageFile.name))) {
-                const fileContent = await fs.promises.readFile(join(DocumentationService.DOCS_PATH, category, subCategory, pageFile.name), 'utf8');
+            if (await FileUtils.exists(join(DocumentationService.DOCS_PATH, category.key, subCategory.key, pageFile.name))) {
+                const fileContent = await fs.promises.readFile(join(DocumentationService.DOCS_PATH, category.key, subCategory.key, pageFile.name), 'utf8');
                 const { metadata }: any = parseMD(fileContent);
                 page.name = metadata.name || page.name;
                 page.index = metadata.index || page.index;

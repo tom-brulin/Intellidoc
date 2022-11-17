@@ -15,4 +15,17 @@ export class Category {
         this.index = index || 9999;
         this.subCategories = [];
     }
+
+    getFirstPageLink(): string {
+        const firstSubCategory = this.subCategories.length > 0 ? this.subCategories[0] : null;
+
+        if (firstSubCategory) {
+            const firstPage = firstSubCategory.pages.length > 0 ? firstSubCategory.pages[0] : null;
+
+            return firstPage ? `/${this.key}/${firstSubCategory.key}/${firstPage.key}` : '/';
+        } else {
+            return '/';
+        }
+    }
+
 }

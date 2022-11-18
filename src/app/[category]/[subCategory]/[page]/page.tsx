@@ -30,9 +30,25 @@ export default async function Page({ params }: Props) {
                 {/* @ts-expect-error Server Component */}
                 <Sidebar currentPage={page} />
             </Suspense>
-            <main className="w-full z-20 pt-10 xl:max-w-none">
+            <main className="w-full z-20 py-10 xl:max-w-none">
                 <Header page={page} />
-                <Markdown>{pageContent}</Markdown>
+                <div className="
+                    prose 
+                    prose-slate 
+                    prose-headings:text-slate-200 
+                    prose-hr:border-slate-400 
+                    prose-strong:text-slate-400 
+                    prose-blockquote:text-slate-400 
+                    prose-code:text-slate-400
+                    prose-a:text-slate-200
+                    prose-a:no-underline
+                    prose-a:border-b
+                    hover:prose-a:border-b-2
+                    prose-a:border-b-sky-400
+                    text-slate-400
+                    transition">
+                    <Markdown>{pageContent}</Markdown>
+                </div>
             </main>
         </div>
     )

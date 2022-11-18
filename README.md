@@ -6,8 +6,7 @@ Generate beautiful documentation only writing markdown files.
 
 ## Getting Started
 
-**Clone the project**
-`git clone git@github.com:tom-brulin/Intellidoc.git`
+**Download the latest release [here](https://github.com/tom-brulin/Intellidoc/releases/latest/)**
 
 **Install dependencies**
 `npm install`

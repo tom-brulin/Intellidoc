@@ -15,7 +15,7 @@ export default function RootLayout({
                     {children}
                 </div>
 
-                <script src="https://unpkg.com/phosphor-icons"></script>
+                <script src="https://unpkg.com/phosphor-icons" async></script>
             </body>
         </html>
     );

@@ -83,4 +83,3 @@ index: 1 (order in sidebar)
 - Code Syntax Highlighting
 - Notes
 - Code Group (with tabs)
-- Hot reload for development

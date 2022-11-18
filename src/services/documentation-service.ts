@@ -12,7 +12,7 @@ export class DocumentationService {
     private static categories: Category[] = [];
 
     public async getCategories(): Promise<Category[]> {
-        if (DocumentationService.categories.length <= 0) {
+        if (process.env.NODE_ENV === 'development' || DocumentationService.categories.length <= 0) {
             DocumentationService.categories = await this.populateCategories();
         }
 

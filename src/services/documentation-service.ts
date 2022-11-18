@@ -8,9 +8,33 @@ import { FileUtils } from '../utils/file-utils';
 
 export class DocumentationService {
 
-    private static DOCS_PATH = join(process.cwd(), 'docs');
+    public static DOCS_PATH = join(process.cwd(), 'docs');
+    private static categories: Category[] = [];
 
     public async getCategories(): Promise<Category[]> {
+        if (DocumentationService.categories.length <= 0) {
+            DocumentationService.categories = await this.populateCategories();
+        }
+
+        return DocumentationService.categories;
+    }
+
+    public async getCategory(key: string): Promise<Category | undefined> {
+        const categories = await this.getCategories();
+        return categories.find(c => c.key === key);
+    }
+
+    public async getSubCategory(categoryKey: string, subCategoryKey: string): Promise<SubCategory | undefined> {
+        const category = await this.getCategory(categoryKey);
+        return category?.subCategories.find(sc => sc.key === subCategoryKey);
+    }
+
+    public async getPage(categoryKey: string, subCategoryKey: string, pageKey: string): Promise<Page | undefined> {
+        const subCategory = await this.getSubCategory(categoryKey, subCategoryKey);
+        return subCategory?.pages.find(p => p.key === pageKey);
+    }
+
+    private async populateCategories(): Promise<Category[]> {
         const categories: Category[] = [];
         const categoryDirectories = await fs.promises.readdir(DocumentationService.DOCS_PATH, { withFileTypes: true });
 
@@ -38,7 +62,7 @@ export class DocumentationService {
         return categories;
     }    
 
-    public async getSubCategories(category: Category): Promise<SubCategory[]> {
+    private async getSubCategories(category: Category): Promise<SubCategory[]> {
         const subCategories: SubCategory[] = [];
         const subCategoryDirectories = await fs.promises.readdir(join(DocumentationService.DOCS_PATH, category.key), { withFileTypes: true });
 
@@ -65,7 +89,7 @@ export class DocumentationService {
         return subCategories;
     }
 
-    public async getPages(category: Category, subCategory: SubCategory): Promise<Page[]> {
+    private async getPages(category: Category, subCategory: SubCategory): Promise<Page[]> {
         const pages: Page[] = [];
         const pageFiles = await fs.promises.readdir(join(DocumentationService.DOCS_PATH, category.key, subCategory.key), { withFileTypes: true });
 
